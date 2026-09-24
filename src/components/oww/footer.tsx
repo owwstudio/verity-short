@@ -52,9 +52,9 @@ const MENUS: Array<{ name: string; entries: MenuEntry[] }> = [
 ];
 
 const OFFICES = [
-  { name: "San Francisco", x: 159.9, y: 128.4 },
-  { name: "Amsterdam", x: 513.6, y: 87.9 },
-  { name: "Berlin", x: 537.2, y: 87.5 },
+  { name: "San Francisco", modifier: "san-francisco" },
+  { name: "Amsterdam", modifier: "amsterdam" },
+  { name: "Berlin", modifier: "berlin" },
 ];
 
 export const Footer = component$(() => {
@@ -76,13 +76,20 @@ export const Footer = component$(() => {
       const revealItems = Array.from(
         footer.querySelectorAll<HTMLElement>("[data-footer-reveal]"),
       );
-      if (!revealItems.length) return;
+      const pins = Array.from(
+        footer.querySelectorAll<HTMLElement>("[data-footer-pin]"),
+      );
+      const map = footer.querySelector<HTMLElement>("[data-footer-map]");
+
+      if (!revealItems.length && !pins.length) return;
 
       const media = gsap.matchMedia();
+
       media.add(
         "(min-width: 70rem) and (prefers-reduced-motion: no-preference)",
         () => {
           gsap.set(revealItems, { y: 24, autoAlpha: 0 });
+          gsap.set(pins, { autoAlpha: 0 });
 
           const timeline = gsap.timeline({
             defaults: { ease: "none" },
@@ -108,6 +115,17 @@ export const Footer = component$(() => {
             );
           });
 
+          timeline.to(
+            pins,
+            {
+              autoAlpha: 1,
+              duration: 0.18,
+              stagger: 0.08,
+              ease: "power2.out",
+            },
+            0.5,
+          );
+
           return () => timeline.kill();
         },
       );
@@ -128,7 +146,28 @@ export const Footer = component$(() => {
               },
             }),
           );
-          return () => tweens.forEach((tween) => tween.kill());
+
+          const pinTimeline = map
+            ? gsap
+                .timeline({
+                  scrollTrigger: {
+                    trigger: map,
+                    start: "top 88%",
+                    toggleActions: "play none none reverse",
+                  },
+                })
+                .from(pins, {
+                  autoAlpha: 0,
+                  duration: 0.5,
+                  stagger: 0.12,
+                  ease: "power2.out",
+                })
+            : undefined;
+
+          return () => {
+            tweens.forEach((tween) => tween.kill());
+            pinTimeline?.kill();
+          };
         },
       );
 
@@ -155,34 +194,45 @@ export const Footer = component$(() => {
               class="site-footer__mark"
               src="/assets/images/hh-monogram.svg"
               alt=""
-              width={85}
-              height={94}
+              width="85"
+              height="94"
               loading="lazy"
               decoding="async"
             />
             <span class="site-footer__brand">Helge Heupel</span>
           </a>
 
-          <ul class="site-footer__lead-links" data-footer-reveal>
-            <li class="site-footer__lead-item">
-              <a class="site-footer__link" href="/assessment/">
-                Assessment
-              </a>
-            </li>
-            <li class="site-footer__lead-item">
-              <a class="site-footer__link" href="/assurance/">
-                Assurance
-              </a>
-            </li>
-          </ul>
+          <div class="site-footer__lead-actions">
+            <ul class="site-footer__lead-links" data-footer-reveal>
+              <li class="site-footer__lead-item">
+                <a class="site-footer__link" href="/assessment/">
+                  Assessment
+                </a>
+              </li>
+              <li class="site-footer__lead-item">
+                <a class="site-footer__link" href="/assurance/">
+                  Assurance
+                </a>
+              </li>
+            </ul>
 
-          <a
-            class="site-footer__cta"
-            href="mailto:contact@helgeheupel.com?subject=Call%20with%20Founder"
-            data-footer-reveal
-          >
-            Call with Founder
-          </a>
+            <a
+              class="button button--primary button--with-icon site-footer__cta"
+              href="mailto:contact@helgeheupel.com?subject=Call%20with%20Founder"
+              data-button="primary"
+              data-footer-reveal
+            >
+              <span class="button__label">Call with Founder</span>
+              <span class="button__icon" aria-hidden="true">
+                <img
+                  src="/assets/icons/arrow-circle-right.svg"
+                  alt=""
+                  width="38"
+                  height="38"
+                />
+              </span>
+            </a>
+          </div>
         </div>
 
         <nav class="site-footer__menus" aria-label="Footer navigation">
@@ -212,6 +262,44 @@ export const Footer = component$(() => {
           ))}
         </nav>
 
+        <figure class="site-footer__map" data-footer-map data-footer-reveal>
+          <div class="site-footer__map-canvas">
+            <img
+              class="site-footer__map-image"
+              src="/assets/images/map-base%20footer.svg"
+              alt=""
+              width="1440"
+              height="402"
+              loading="lazy"
+              decoding="async"
+            />
+
+            <ul class="site-footer__pins" aria-label="Office locations">
+              {OFFICES.map((office) => (
+                <li
+                  class={`site-footer__pin site-footer__pin--${office.modifier}`}
+                  data-footer-pin
+                  key={office.name}
+                >
+                  <img
+                    class="site-footer__pin-image"
+                    src="/assets/images/pin%20footer.svg"
+                    alt=""
+                    width="40"
+                    height="40"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span class="site-footer__pending-note">{office.name}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <figcaption class="site-footer__pending-note">
+            Offices in San Francisco, Amsterdam, and Berlin
+          </figcaption>
+        </figure>
+
         <div class="site-footer__company">
           <address class="site-footer__address" data-footer-reveal>
             <strong class="site-footer__company-name">Helge Heupel Inc.</strong>
@@ -219,71 +307,39 @@ export const Footer = component$(() => {
               1 Sansome Street, Suite 1400
             </span>
             <span class="site-footer__address-line">
-              San Francisco, CA 94104
+              San Francisco, CA 94104 United States
             </span>
-            <span class="site-footer__address-line">United States</span>
           </address>
 
-          <div class="site-footer__contact" data-footer-reveal>
-            <p class="site-footer__contact-details">
-              <a
-                class="site-footer__company-link"
-                href="mailto:email@helgeheupel.com"
-              >
-                email@helgeheupel.com
-              </a>
-              <a class="site-footer__company-link" href="tel:+15124176804">
-                +1 512 417 6804
-              </a>
-            </p>
-            <ul class="site-footer__legal">
-              <li>
-                <a class="site-footer__company-link" href="/impressum/">
-                  Legal notice
-                </a>
-              </li>
-              <li>
-                <a class="site-footer__company-link" href="/privacy/">
-                  Privacy policy
-                </a>
-              </li>
-              <li>
-                <a class="site-footer__company-link" href="/cookies/">
-                  Cookies
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <ul class="site-footer__offices" data-footer-reveal>
-            {OFFICES.map((office) => (
-              <li key={office.name}>{office.name}</li>
-            ))}
-          </ul>
-
-          <figure class="site-footer__map" data-footer-reveal>
-            <img
-              class="site-footer__map-image"
-              src="/assets/images/world-minimal.svg"
-              alt=""
-              width={1000}
-              height={389}
-              loading="lazy"
-              decoding="async"
-            />
-            <svg
-              class="site-footer__marks"
-              viewBox="0 0 1000 389"
-              aria-hidden="true"
+          <p class="site-footer__contact-details" data-footer-reveal>
+            <a
+              class="site-footer__company-link"
+              href="mailto:email@helgeheupel.com"
             >
-              {OFFICES.map((office) => (
-                <circle key={office.name} cx={office.x} cy={office.y} r={7} />
-              ))}
-            </svg>
-            <figcaption class="site-footer__pending-note">
-              Offices in San Francisco, Amsterdam and Berlin
-            </figcaption>
-          </figure>
+              email@helgeheupel.com
+            </a>
+            <a class="site-footer__company-link" href="tel:+15124176804">
+              +1 512 417 6804
+            </a>
+          </p>
+
+          <ul class="site-footer__legal" data-footer-reveal>
+            <li>
+              <a class="site-footer__company-link" href="/impressum/">
+                Legal notice
+              </a>
+            </li>
+            <li>
+              <a class="site-footer__company-link" href="/privacy/">
+                Privacy policy
+              </a>
+            </li>
+            <li>
+              <a class="site-footer__company-link" href="/cookies/">
+                Cookies
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
     </footer>
