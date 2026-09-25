@@ -1,0 +1,245 @@
+.decision-cta {
+  position: relative;
+  z-index: 6;
+  color: var(--color-surface-primary);
+  background: var(--color-surface-page);
+}
+
+.decision-cta__inner {
+  inline-size: min(100%, 90rem);
+  margin-inline: auto;
+  padding: 3rem 3rem 4.9375rem;
+}
+
+.decision-cta__panel {
+  position: relative;
+  block-size: 25rem;
+  overflow: hidden;
+  background: #002019;
+  border-radius: 2rem;
+  isolation: isolate;
+  will-change: transform, opacity;
+}
+
+.decision-cta__background {
+  position: absolute;
+  z-index: -1;
+  inset-block-start: 41.375%;
+  inset-inline-start: 0;
+  display: block;
+  inline-size: 144.5685%;
+  block-size: auto;
+  max-inline-size: none;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transform-origin: center;
+  will-change: transform;
+}
+
+.decision-cta__copy {
+  position: absolute;
+  inset-block-start: 3.5rem;
+  inset-inline-start: 3.5rem;
+  display: grid;
+  inline-size: 34.1875rem;
+  gap: 2rem;
+}
+
+.decision-cta__title,
+.decision-cta__description,
+.decision-cta__card-title,
+.decision-cta__card-description {
+  margin: 0;
+}
+
+.decision-cta__title {
+  inline-size: 27.125rem;
+  font-size: 2.5rem;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.04em;
+}
+
+.decision-cta__description {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+}
+
+.decision-cta__action {
+  position: absolute;
+  inset-block-start: 18.625rem;
+  inset-inline-start: 3.5rem;
+  block-size: 2.875rem;
+}
+
+.decision-cta__card {
+  position: absolute;
+  inset-block-start: 10.8125rem;
+  inset-inline-end: 3.5rem;
+  display: grid;
+  box-sizing: border-box;
+  inline-size: 27.8125rem;
+  block-size: 10.6875rem;
+  margin: 0;
+  padding: 1.5rem;
+  gap: 1rem;
+  align-content: start;
+  background: rgb(150 255 154 / 8%);
+  border: 0;
+  border-radius: 1.5rem;
+  box-shadow:
+    inset 0 0.0625rem 0 rgb(255 255 255 / 16%),
+    inset 0 0 0 0.0625rem rgb(255 255 255 / 18%),
+    0 1.5rem 3.5rem rgb(0 18 14 / 20%);
+  backdrop-filter: blur(0.75rem) saturate(125%);
+}
+
+.decision-cta__card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.1875rem;
+}
+
+.decision-cta__card-description {
+  color: rgb(255 255 255 / 70%);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.375rem;
+  letter-spacing: -0.02em;
+}
+
+.decision-cta__divider {
+  display: block;
+  inline-size: 100%;
+  block-size: 0.0625rem;
+  margin-block-start: 5rem;
+  background: rgb(7 38 21 / 10%);
+}
+
+.decision-cta__action:focus-visible {
+  outline-color: var(--color-surface-primary);
+}
+
+@media (hover: hover) {
+  .decision-cta__action {
+    transition: opacity 200ms ease;
+  }
+
+  .decision-cta__action:hover {
+    opacity: 0.86;
+  }
+}
+
+@media (width < 70rem) {
+  .decision-cta__inner {
+    padding: 1.25rem var(--layout-page-gutter) 3.5rem;
+  }
+
+  .decision-cta__panel {
+    display: grid;
+    min-block-size: 34rem;
+    block-size: auto;
+    padding: clamp(1.5rem, 7vw, 3rem);
+    grid-template-rows: auto auto auto;
+    gap: 2rem;
+    align-content: center;
+    border-radius: 1.5rem;
+  }
+
+  .decision-cta__background {
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: 42% center;
+    transform: none;
+  }
+
+  .decision-cta__copy,
+  .decision-cta__action,
+  .decision-cta__card {
+    position: relative;
+    inset: auto;
+  }
+
+  .decision-cta__copy {
+    inline-size: min(100%, 34.1875rem);
+    gap: 1.25rem;
+  }
+
+  .decision-cta__title {
+    inline-size: min(100%, 27.125rem);
+    font-size: clamp(1.75rem, 7vw, 2.5rem);
+  }
+
+  .decision-cta__description {
+    font-size: 0.875rem;
+  }
+
+  .decision-cta__card {
+    inline-size: min(100%, 27.8125rem);
+    block-size: auto;
+    min-block-size: 0;
+    padding: 1.25rem;
+    border-radius: 1.25rem;
+  }
+
+  .decision-cta__action {
+    justify-self: start;
+  }
+
+  .decision-cta__divider {
+    margin-block-start: 3.5rem;
+  }
+}
+
+@media (48rem <= width < 70rem) {
+  .decision-cta__panel {
+    min-block-size: 30rem;
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.82fr);
+    grid-template-rows: 1fr auto;
+    column-gap: 2.5rem;
+  }
+
+  .decision-cta__copy {
+    align-self: end;
+  }
+
+  .decision-cta__card {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+  }
+
+  .decision-cta__action {
+    grid-column: 1;
+  }
+}
+
+@media (width < 30rem) {
+  .decision-cta__panel {
+    min-block-size: 36rem;
+    gap: 1.5rem;
+  }
+
+  .decision-cta__card-description {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .decision-cta__panel,
+  .decision-cta__copy > *,
+  .decision-cta__card,
+  .decision-cta__action {
+    opacity: 1;
+    transform: none;
+  }
+
+  .decision-cta__background {
+    opacity: 1;
+  }
+}

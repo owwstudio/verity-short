@@ -6,14 +6,30 @@
   background: #f2f6f1;
 }
 
+.our-approach__wash {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background: var(--color-surface-page);
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+}
+
 .our-approach__stage {
   --approach-stage-width: min(100vw, 90rem);
   position: relative;
+  z-index: 1;
   inline-size: 100%;
   block-size: 100svh;
   max-inline-size: 90rem;
   margin-inline: auto;
   overflow: hidden;
+}
+
+.our-approach__scene {
+  position: absolute;
+  inset: 0;
 }
 
 .our-approach__copy {
@@ -370,6 +386,25 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .our-approach {
+    block-size: auto;
+    overflow: visible;
+  }
+
+  .our-approach__wash {
+    display: none;
+  }
+
+  .our-approach__stage {
+    block-size: auto;
+    overflow: visible;
+  }
+
+  .our-approach__scene {
+    position: relative;
+    min-block-size: 100svh;
+  }
+
   .our-approach__card,
   .our-approach__copy,
   .our-approach__cta {
