@@ -56,11 +56,11 @@ export const OurTeam = component$(() => {
           scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: () => `+=${Math.max(innerHeight * 1.8, 1200)}`,
+            end: () => `+=${innerHeight * 3.2}`,
             pin: section,
             pinSpacing: true,
-            anticipatePin: 1,
-            scrub: 1.2,
+            anticipatePin: 0,
+            scrub: 0.75,
             invalidateOnRefresh: true,
             refreshPriority: -30,
           },
@@ -87,7 +87,7 @@ export const OurTeam = component$(() => {
               duration: 0.92,
               ease: "power3.out",
             },
-            0.68,
+            0.95,
           )
           .to(
             body,
@@ -97,7 +97,7 @@ export const OurTeam = component$(() => {
               duration: 0.72,
               ease: "power3.out",
             },
-            0.76,
+            1.35,
           )
           .to(
             quote,
@@ -107,7 +107,7 @@ export const OurTeam = component$(() => {
               duration: 0.62,
               ease: "power3.out",
             },
-            0.9,
+            1.75,
           )
           .to(
             author,
@@ -117,7 +117,7 @@ export const OurTeam = component$(() => {
               duration: 0.6,
               ease: "power3.out",
             },
-            1.02,
+            2.15,
           )
           .to({}, { duration: 0.58 });
 

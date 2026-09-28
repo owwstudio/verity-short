@@ -242,7 +242,7 @@
   }
 }
 
-@media (width < 48rem) {
+@media (width < 70rem) {
   .our-team__stage {
     display: grid;
     box-sizing: border-box;
@@ -294,6 +294,29 @@
   .our-team__author {
     grid-area: author;
     align-self: end;
+  }
+}
+
+@media (48rem <= width < 70rem) {
+  .our-team__stage {
+    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+    row-gap: clamp(1rem, 2svh, 1.5rem);
+  }
+
+  .our-team__portrait {
+    max-inline-size: 14rem;
+  }
+
+  .our-team__body {
+    max-inline-size: 32rem;
+  }
+
+  .our-team__body-copy {
+    font-size: 0.875rem;
+  }
+
+  .our-team__quote {
+    font-size: 0.875rem;
   }
 }
 

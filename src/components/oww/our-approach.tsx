@@ -16,11 +16,12 @@ const DECISION_ITEMS = [
   {
     title: "Enterprise exposure",
     description:
-      "An unmet critical requirement takes precedence over the overall score.",
+      "Orders and engineering commitments depend on that capacity. Qualifying an alternative supplier takes six weeks.",
   },
   {
     title: "Required action",
-    description: "Verify capacity before release.",
+    description:
+      "The procurement owner confirms capacity before release. If it remains unconfirmed, escalate the decision while altemative supply is still viable.",
   },
 ] as const;
 
@@ -138,9 +139,8 @@ export const OurApproach = component$(() => {
       media.add("(prefers-reduced-motion: no-preference)", () => {
         gsap.set(copyTargets, { y: 36, autoAlpha: 0 });
         gsap.set(card, {
-          scaleX: 0.125,
+          x: 80,
           autoAlpha: 0,
-          transformOrigin: "100% 50%",
         });
         gsap.set(cardTargets, { y: 20, autoAlpha: 0 });
         gsap.set(cta, { y: 72, autoAlpha: 0 });
@@ -155,92 +155,124 @@ export const OurApproach = component$(() => {
         gsap.set(decisionTable, { y: 88, autoAlpha: 0 });
         gsap.set(decisionNote, { y: 44, autoAlpha: 0 });
 
+        const entryTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: "top 50%",
+            end: "top top",
+            scrub: 0.8,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        entryTimeline.to(
+          copyTargets,
+          {
+            y: 18,
+            autoAlpha: 0.5,
+            duration: 1,
+            stagger: 0.08,
+            ease: "none",
+          },
+          0,
+        );
+
         const timeline = gsap.timeline({
           scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: () => `+=${Math.max(innerHeight * 5.4, 3600)}`,
+            end: () => `+=${innerHeight * 10.5}`,
             pin: section,
             pinSpacing: true,
-            anticipatePin: 1,
+            anticipatePin: 0,
             refreshPriority: -10,
-            scrub: 1.4,
+            scrub: 0.8,
             invalidateOnRefresh: true,
           },
         });
 
         timeline
-          .to(
+          .fromTo(
             card,
             {
-              scaleX: 1,
-              autoAlpha: 1,
-              duration: 0.34,
-              ease: "power2.inOut",
+              x: 80,
+              autoAlpha: 0,
             },
-            0.16,
+            {
+              x: 0,
+              autoAlpha: 1,
+              duration: 1,
+              ease: "power2.inOut",
+              immediateRender: false,
+            },
+            0.5,
           )
-          .to(
+          .fromTo(
             copyTargets,
+            {
+              y: 18,
+              autoAlpha: 0.5,
+            },
             {
               y: 0,
               autoAlpha: 1,
-              duration: 0.3,
-              stagger: 0.05,
+              duration: 0.5,
+              stagger: 0.08,
               ease: "power2.out",
+              immediateRender: false,
             },
-            0.22,
+            0.001,
           )
           .to(
             cardTargets,
             {
               y: 0,
               autoAlpha: 1,
-              duration: 0.34,
-              stagger: 0.05,
+              duration: 0.8,
+              stagger: 0.08,
               ease: "power2.out",
             },
-            0.8,
+            1.5,
           )
           .to(
             cta,
             {
               y: 0,
               autoAlpha: 1,
-              duration: 0.3,
+              duration: 1,
               ease: "power2.out",
             },
-            0.88,
+            2.5,
           )
-          .to({}, { duration: 0.28 }, 1.24)
+          .to({}, { duration: 0.7 }, 3.5)
           .to(
             [copy, card, cta],
             {
               y: -88,
               autoAlpha: 0,
-              duration: 0.54,
-              stagger: 0.06,
+              duration: 0.8,
+              stagger: 0.08,
               ease: "power2.inOut",
             },
-            1.52,
+            4.2,
           )
           .to(
             wash,
             {
               autoAlpha: 1,
-              duration: 0.96,
+              duration: 1.25,
               ease: "sine.inOut",
             },
-            2.14,
+            4.95,
           )
-          .to({}, { duration: 0.3 }, 3.1)
+          .to({}, { duration: 0.25 }, 6.2)
           .set(
             approachScene,
             {
               pointerEvents: "none",
               attr: { "aria-hidden": "true" },
             },
-            3.28,
+            6.45,
           )
           .set(
             decisionScene,
@@ -248,52 +280,51 @@ export const OurApproach = component$(() => {
               pointerEvents: "auto",
               attr: { "aria-hidden": "false" },
             },
-            3.28,
+            6.45,
           )
           .to(
             decisionCopyTargets,
             {
               y: 0,
               autoAlpha: 1,
-              duration: 0.48,
-              stagger: 0.06,
+              duration: 0.75,
+              stagger: 0.09,
               ease: "none",
             },
-            3.34,
+            6.55,
           )
           .to(
             decisionMetricTargets,
             {
               y: 0,
               autoAlpha: 1,
-              duration: 0.5,
-              stagger: 0.07,
+              duration: 0.8,
+              stagger: 0.1,
               ease: "none",
             },
-            3.44,
+            6.75,
           )
           .to(
             decisionTable,
             {
               y: 0,
               autoAlpha: 1,
-              duration: 0.54,
+              duration: 0.85,
               ease: "none",
             },
-            3.76,
+            7.4,
           )
           .to(
             decisionNote,
             {
               y: 0,
               autoAlpha: 1,
-              duration: 0.38,
+              duration: 0.55,
               ease: "none",
             },
-            4.08,
+            7.95,
           )
-          .to({}, { duration: 0.36 }, 4.46)
-          .to({}, { duration: 1.8 }, 4.82);
+          .to({}, { duration: 2 }, 8.5);
 
         const refreshTimer = window.setTimeout(() => {
           ScrollTrigger.sort();
@@ -302,6 +333,8 @@ export const OurApproach = component$(() => {
 
         return () => {
           window.clearTimeout(refreshTimer);
+          entryTimeline.scrollTrigger?.kill();
+          entryTimeline.kill();
           timeline.scrollTrigger?.kill();
           timeline.kill();
           gsap.set([copy, card, cta, ...copyTargets, ...cardTargets], {

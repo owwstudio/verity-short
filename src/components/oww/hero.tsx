@@ -72,6 +72,23 @@ export const Hero = component$(() => {
             loading="eager"
             decoding="async"
           />
+
+          <video
+            class="hero__visual-video"
+            autoplay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+            data-hero-video
+          >
+            <source src="/assets/video/Full%20Screen.webm" type="video/webm" />
+            <source
+              src="/assets/video/Verity-Full%20Screen.mov"
+              type="video/quicktime; codecs=hvc1"
+            />
+          </video>
         </div>
       </div>
     </section>

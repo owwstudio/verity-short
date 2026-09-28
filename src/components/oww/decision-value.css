@@ -442,7 +442,7 @@
 
 @media (height < 44rem) and (width < 48rem) {
   .decision-value--embedded .decision-value__stage {
-    padding-block: 1.25rem 1rem;
+    padding-block: 0.5rem 0.75rem;
   }
 
   .decision-value--embedded .decision-value__intro {
@@ -450,7 +450,7 @@
   }
 
   .decision-value--embedded .decision-value__eyebrow {
-    margin-block-end: 0.5rem;
+    margin-block-end: 0.25rem;
     font-size: 0.6875rem;
   }
 
@@ -488,7 +488,7 @@
   }
 
   .decision-value--embedded .decision-value__data {
-    margin-block-start: 0.5rem;
+    margin-block-start: 0.25rem;
   }
 
   .decision-value--embedded .decision-value__mobile-list {
@@ -529,7 +529,7 @@
   }
 
   .decision-value--embedded .decision-value__note {
-    padding-block-start: 0.5rem;
+    padding-block-start: 0.25rem;
     font-size: 0.5rem;
     line-height: 1.1;
   }

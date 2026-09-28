@@ -31,9 +31,15 @@
   block-size: auto;
   max-inline-size: none;
   pointer-events: none;
-  transform: translateY(-50%);
+  transform: translateY(calc(-50% + var(--decision-cta-parallax-y, 0px)))
+    scale(var(--decision-cta-background-scale, 1));
   transform-origin: center;
   will-change: transform;
+}
+
+.decision-cta__primary,
+.decision-cta__secondary {
+  display: contents;
 }
 
 .decision-cta__copy {
@@ -149,12 +155,14 @@
   }
 
   .decision-cta__background {
-    inset: 0;
+    inset: auto 0 auto;
+    inset-block-start: -6%;
     inline-size: 100%;
-    block-size: 100%;
+    block-size: 112%;
     object-fit: cover;
     object-position: 42% center;
-    transform: none;
+    transform: translateY(var(--decision-cta-parallax-y, 0px))
+      scale(var(--decision-cta-background-scale, 1));
   }
 
   .decision-cta__copy,
@@ -218,9 +226,36 @@
   }
 }
 
+@media (width < 48rem) {
+  .decision-cta__panel {
+    box-sizing: border-box;
+    display: flex;
+    min-block-size: 100svh;
+    padding: clamp(6.5rem, 13svh, 7rem) clamp(1.5rem, 7vw, 3rem)
+      clamp(1.5rem, 7vw, 3rem);
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .decision-cta__primary {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+
+  .decision-cta__secondary {
+    display: block;
+  }
+}
+
 @media (width < 30rem) {
   .decision-cta__panel {
-    min-block-size: 36rem;
+    gap: 1.5rem;
+  }
+
+  .decision-cta__primary {
     gap: 1.5rem;
   }
 

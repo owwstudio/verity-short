@@ -88,66 +88,107 @@ export const TheProblem = component$(() => {
           });
           gsap.set(outcomes, { y: 472, autoAlpha: 0 });
 
+          const entryTimeline = gsap.timeline({
+            scrollTrigger: {
+              trigger: section,
+              start: "top 50%",
+              end: "top top",
+              scrub: 0.75,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          entryTimeline
+            .to(headerTargets, {
+              y: 14,
+              autoAlpha: 0.5,
+              duration: 1,
+              stagger: 0.08,
+              ease: "power2.out",
+            })
+            .to(
+              background,
+              {
+                x: () => designWidth() * (-359.0395 / 1440),
+                y: () => designWidth() * (-105.94 / 1440),
+                scale: 1.102335,
+                duration: 1,
+                ease: "power2.inOut",
+              },
+              0,
+            );
+
           const timeline = gsap.timeline({
             scrollTrigger: {
               trigger: section,
               start: "top top",
-              end: () => `+=${Math.max(innerHeight * 0.6, 420)}`,
+              end: () => `+=${innerHeight * 2.5}`,
               pin: section,
               pinSpacing: true,
-              anticipatePin: 1,
-              scrub: 0.85,
+              anticipatePin: 0,
+              scrub: 0.75,
               invalidateOnRefresh: true,
             },
           });
 
           timeline
-            .to(
+            .fromTo(
               headerTargets,
+              { y: 14, autoAlpha: 0.5 },
               {
                 y: 0,
                 autoAlpha: 1,
-                duration: 0.12,
-                stagger: 0.03,
+                duration: 0.38,
+                stagger: 0.08,
                 ease: "power3.out",
+                immediateRender: false,
               },
-              0,
+              0.001,
             )
-            .to(
+            .fromTo(
               background,
+              {
+                x: () => designWidth() * (-359.0395 / 1440),
+                y: () => designWidth() * (-105.94 / 1440),
+                scale: 1.102335,
+              },
               {
                 x: 0,
                 y: 0,
                 scale: 1,
-                duration: 0.3,
+                duration: 0.46,
                 ease: "power2.inOut",
+                immediateRender: false,
               },
-              0.24,
+              0.001,
             )
-            .to(cards[0], { x: 0, duration: 0.25, ease: "power3.out" }, 0.25)
-            .to(cards[1], { x: 0, duration: 0.25, ease: "power3.out" }, 0.34)
+            .to(cards[0], { x: 0, duration: 0.64, ease: "power3.out" }, 0.55)
+            .to(cards[1], { x: 0, duration: 0.64, ease: "power3.out" }, 0.7)
             .to(
               background,
               {
                 x: () => designWidth() * (346 / 1440),
-                duration: 0.3,
+                duration: 0.66,
                 ease: "power2.inOut",
               },
-              0.66,
+              1.54,
             )
             .to(
               cards,
-              { height: 280, duration: 0.28, ease: "power2.inOut" },
-              0.66,
+              { height: 280, duration: 0.58, ease: "power2.inOut" },
+              1.58,
             )
-            .to(cards[1], { y: 24, duration: 0.28, ease: "power2.inOut" }, 0.66)
+            .to(cards[1], { y: 24, duration: 0.58, ease: "power2.inOut" }, 1.58)
             .to(
               outcomes,
-              { y: 0, autoAlpha: 1, duration: 0.28, ease: "power3.out" },
-              0.7,
-            );
+              { y: 0, autoAlpha: 1, duration: 0.6, ease: "power3.out" },
+              1.68,
+            )
+            .to({}, { duration: 0.22 }, 2.28);
 
           return () => {
+            entryTimeline.scrollTrigger?.kill();
+            entryTimeline.kill();
             timeline.scrollTrigger?.kill();
             timeline.kill();
             gsap.set([background, ...headerTargets, ...cards, outcomes], {
@@ -174,71 +215,108 @@ export const TheProblem = component$(() => {
           });
           gsap.set(outcomes, { y: () => innerHeight * 0.55, autoAlpha: 0 });
 
+          const entryTimeline = gsap.timeline({
+            scrollTrigger: {
+              trigger: section,
+              start: "top 50%",
+              end: "top top",
+              scrub: 0.75,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          entryTimeline
+            .to(headerTargets, {
+              y: 12,
+              autoAlpha: 0.5,
+              duration: 1,
+              stagger: 0.08,
+              ease: "power2.out",
+            })
+            .to(
+              background,
+              {
+                xPercent: -10.5,
+                yPercent: -2.5,
+                scale: 1.13,
+                duration: 1,
+                ease: "power2.inOut",
+              },
+              0,
+            );
+
           const timeline = gsap.timeline({
             scrollTrigger: {
               trigger: section,
               start: "top top",
-              end: () => `+=${Math.max(innerHeight * 0.6, 420)}`,
+              end: () => `+=${innerHeight * 2.5}`,
               pin: section,
               pinSpacing: true,
-              anticipatePin: 1,
+              anticipatePin: 0,
               scrub: 0.75,
               invalidateOnRefresh: true,
             },
           });
 
           timeline
-            .to(
+            .fromTo(
               headerTargets,
+              { y: 12, autoAlpha: 0.5 },
               {
                 y: 0,
                 autoAlpha: 1,
-                duration: 0.12,
-                stagger: 0.03,
+                duration: 0.38,
+                stagger: 0.08,
                 ease: "power3.out",
+                immediateRender: false,
               },
-              0,
+              0.001,
             )
-            .to(
+            .fromTo(
               background,
+              { xPercent: -10.5, yPercent: -2.5, scale: 1.13 },
               {
                 xPercent: -5,
                 yPercent: 0,
                 scale: 1.08,
-                duration: 0.3,
+                duration: 0.46,
                 ease: "power2.inOut",
+                immediateRender: false,
               },
-              0.24,
+              0.001,
             )
-            .to(cards[0], { x: 0, duration: 0.24, ease: "power3.out" }, 0.25)
-            .to(cards[1], { x: 0, duration: 0.24, ease: "power3.out" }, 0.34)
+            .to(cards[0], { x: 0, duration: 0.64, ease: "power3.out" }, 0.55)
+            .to(cards[1], { x: 0, duration: 0.64, ease: "power3.out" }, 0.7)
             .to(
               cards,
               {
                 y: () => -innerHeight * 0.22,
                 autoAlpha: 0,
-                duration: 0.28,
+                duration: 0.6,
                 ease: "power2.inOut",
               },
-              0.66,
+              1.56,
             )
             .to(
               background,
               {
                 xPercent: 8,
                 scale: 1.12,
-                duration: 0.3,
+                duration: 0.66,
                 ease: "power2.inOut",
               },
-              0.66,
+              1.54,
             )
             .to(
               outcomes,
-              { y: 0, autoAlpha: 1, duration: 0.28, ease: "power3.out" },
-              0.7,
-            );
+              { y: 0, autoAlpha: 1, duration: 0.6, ease: "power3.out" },
+              1.68,
+            )
+            .to({}, { duration: 0.22 }, 2.28);
 
           return () => {
+            entryTimeline.scrollTrigger?.kill();
+            entryTimeline.kill();
             timeline.scrollTrigger?.kill();
             timeline.kill();
             gsap.set([background, ...headerTargets, ...cards, outcomes], {
