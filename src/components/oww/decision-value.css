@@ -442,11 +442,11 @@
 
 @media (height < 44rem) and (width < 48rem) {
   .decision-value--embedded .decision-value__stage {
-    padding-block: 0.5rem 0.75rem;
+    padding-block: 2.5rem 0.75rem;
   }
 
   .decision-value--embedded .decision-value__intro {
-    gap: 0.5rem;
+    gap: 1rem;
   }
 
   .decision-value--embedded .decision-value__eyebrow {
@@ -488,7 +488,7 @@
   }
 
   .decision-value--embedded .decision-value__data {
-    margin-block-start: 0.25rem;
+    margin-block-start: 2.25rem;
   }
 
   .decision-value--embedded .decision-value__mobile-list {

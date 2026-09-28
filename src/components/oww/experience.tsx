@@ -211,38 +211,48 @@ export const Experience = component$(() => {
         },
       );
 
-      media.add(
-        "(max-width: 69.999rem) and (prefers-reduced-motion: no-preference)",
-        () => {
-          resetCounters();
-          const counterTimeline = createCounterTimeline(
-            metricsWindow,
-            "top 50%",
-          );
-          const revealTargets = Array.from(
-            section.querySelectorAll<HTMLElement>("[data-experience-reveal]"),
-          );
-          const tweens = revealTargets.map((target) =>
-            gsap.from(target, {
-              y: 28,
-              autoAlpha: 0,
-              duration: 0.7,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: target,
-                start: "top 50%",
-                toggleActions: "play none none reverse",
-              },
-            }),
-          );
+      const setupCompactExperience = (mobile: boolean) => {
+        resetCounters();
+        const counterTimeline = createCounterTimeline(
+          mobile ? section : metricsWindow,
+          mobile ? "top 90%" : "top 50%",
+        );
+        const revealTargets = Array.from(
+          section.querySelectorAll<HTMLElement>("[data-experience-reveal]"),
+        ).filter(
+          (target) =>
+            !mobile || !target.hasAttribute("data-experience-early-reveal"),
+        );
+        const tweens = revealTargets.map((target) =>
+          gsap.from(target, {
+            y: 28,
+            autoAlpha: 0,
+            duration: 0.7,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: target,
+              start: "top 50%",
+              toggleActions: "play none none reverse",
+            },
+          }),
+        );
 
-          return () => {
-            counterTimeline.scrollTrigger?.kill();
-            counterTimeline.kill();
-            tweens.forEach((tween) => tween.kill());
-            restoreCounters();
-          };
-        },
+        return () => {
+          counterTimeline.scrollTrigger?.kill();
+          counterTimeline.kill();
+          tweens.forEach((tween) => tween.kill());
+          restoreCounters();
+        };
+      };
+
+      media.add(
+        "(min-width: 48rem) and (max-width: 69.999rem) and (prefers-reduced-motion: no-preference)",
+        () => setupCompactExperience(false),
+      );
+
+      media.add(
+        "(max-width: 47.999rem) and (prefers-reduced-motion: no-preference)",
+        () => setupCompactExperience(true),
       );
 
       cleanup(() => media.revert());
@@ -283,7 +293,11 @@ export const Experience = component$(() => {
             id="experience-details"
             data-experience-details
           >
-            <div class="experience__copy" data-experience-reveal>
+            <div
+              class="experience__copy"
+              data-experience-reveal
+              data-experience-early-reveal
+            >
               <p data-experience-text-reveal>
                 We mapped dependencies across systems spanning five decades,
                 aligned business data across platforms, and managed the
@@ -307,6 +321,7 @@ export const Experience = component$(() => {
               class="experience__metrics-window"
               data-experience-metrics-window
               data-experience-reveal
+              data-experience-early-reveal
             >
               <ul class="experience__metrics" data-experience-metrics>
                 {METRICS.map((metric) => (
@@ -362,6 +377,7 @@ export const Experience = component$(() => {
             class="experience__action"
             data-experience-reveal
             data-experience-text-reveal
+            data-experience-early-reveal
           >
             <a
               class="button button--primary button--with-icon experience__cta"
