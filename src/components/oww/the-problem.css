@@ -390,7 +390,8 @@
 
 @media (width < 30rem) {
   .the-problem__card {
-    padding: 1.25rem;
+    padding: 1rem;
+    height: max-content;
   }
 
   .the-problem__card-description {

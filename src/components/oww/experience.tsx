@@ -63,7 +63,10 @@ export const Experience = component$(() => {
       const metrics = section.querySelector<HTMLElement>(
         "[data-experience-metrics]",
       );
-      if (!stage || !metrics) return;
+      const metricsWindow = section.querySelector<HTMLElement>(
+        "[data-experience-metrics-window]",
+      );
+      if (!stage || !metrics || !metricsWindow) return;
 
       const textRevealTargets = Array.from(
         section.querySelectorAll<HTMLElement>("[data-experience-text-reveal]"),
@@ -108,11 +111,11 @@ export const Experience = component$(() => {
         });
       };
 
-      const createCounterTimeline = () => {
+      const createCounterTimeline = (trigger: HTMLElement, start: string) => {
         const timeline = gsap.timeline({
           scrollTrigger: {
-            trigger: section,
-            start: "top 82%",
+            trigger,
+            start,
             toggleActions: "play none none reverse",
           },
         });
@@ -141,8 +144,38 @@ export const Experience = component$(() => {
           section.style.setProperty("--experience-length", "300svh");
           resetCounters();
           gsap.set(textRevealTargets, { y: 28, autoAlpha: 0 });
+          gsap.set(metricsWindow, { y: 36, autoAlpha: 0 });
 
-          const counterTimeline = createCounterTimeline();
+          const counterTimeline = createCounterTimeline(section, "top 50%");
+          const revealTimeline = gsap.timeline({
+            scrollTrigger: {
+              trigger: section,
+              start: "top 50%",
+              end: "top 8%",
+              scrub: 0.85,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          revealTimeline
+            .to(textRevealTargets, {
+              y: 0,
+              autoAlpha: 1,
+              duration: 0.58,
+              stagger: 0.045,
+              ease: "power3.out",
+            })
+            .to(
+              metricsWindow,
+              {
+                y: 0,
+                autoAlpha: 1,
+                duration: 0.68,
+                ease: "power3.out",
+              },
+              0.16,
+            );
+
           const scrollTimeline = gsap.timeline({
             defaults: { ease: "none" },
             scrollTrigger: {
@@ -154,33 +187,22 @@ export const Experience = component$(() => {
             },
           });
 
-          scrollTimeline
-            .to(
-              textRevealTargets,
-              {
-                y: 0,
-                autoAlpha: 1,
-                duration: 0.22,
-                stagger: 0.025,
-                ease: "power3.out",
-              },
-              0,
-            )
-            .to(
-              metrics,
-              {
-                y: -244,
-                duration: 1,
-              },
-              0,
-            );
+          scrollTimeline.to(metrics, {
+            y: -244,
+            duration: 1,
+          });
 
           return () => {
             counterTimeline.scrollTrigger?.kill();
             counterTimeline.kill();
+            revealTimeline.scrollTrigger?.kill();
+            revealTimeline.kill();
             scrollTimeline.kill();
             section.style.removeProperty("--experience-length");
             gsap.set(metrics, { clearProps: "transform" });
+            gsap.set(metricsWindow, {
+              clearProps: "transform,opacity,visibility",
+            });
             gsap.set(textRevealTargets, {
               clearProps: "transform,opacity,visibility",
             });
@@ -189,35 +211,48 @@ export const Experience = component$(() => {
         },
       );
 
-      media.add(
-        "(max-width: 69.999rem) and (prefers-reduced-motion: no-preference)",
-        () => {
-          resetCounters();
-          const counterTimeline = createCounterTimeline();
-          const revealTargets = Array.from(
-            section.querySelectorAll<HTMLElement>("[data-experience-reveal]"),
-          );
-          const tweens = revealTargets.map((target) =>
-            gsap.from(target, {
-              y: 28,
-              autoAlpha: 0,
-              duration: 0.7,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: target,
-                start: "top 90%",
-                toggleActions: "play none none reverse",
-              },
-            }),
-          );
+      const setupCompactExperience = (mobile: boolean) => {
+        resetCounters();
+        const counterTimeline = createCounterTimeline(
+          mobile ? section : metricsWindow,
+          mobile ? "top 90%" : "top 50%",
+        );
+        const revealTargets = Array.from(
+          section.querySelectorAll<HTMLElement>("[data-experience-reveal]"),
+        ).filter(
+          (target) =>
+            !mobile || !target.hasAttribute("data-experience-early-reveal"),
+        );
+        const tweens = revealTargets.map((target) =>
+          gsap.from(target, {
+            y: 28,
+            autoAlpha: 0,
+            duration: 0.7,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: target,
+              start: "top 50%",
+              toggleActions: "play none none reverse",
+            },
+          }),
+        );
 
-          return () => {
-            counterTimeline.scrollTrigger?.kill();
-            counterTimeline.kill();
-            tweens.forEach((tween) => tween.kill());
-            restoreCounters();
-          };
-        },
+        return () => {
+          counterTimeline.scrollTrigger?.kill();
+          counterTimeline.kill();
+          tweens.forEach((tween) => tween.kill());
+          restoreCounters();
+        };
+      };
+
+      media.add(
+        "(min-width: 48rem) and (max-width: 69.999rem) and (prefers-reduced-motion: no-preference)",
+        () => setupCompactExperience(false),
+      );
+
+      media.add(
+        "(max-width: 47.999rem) and (prefers-reduced-motion: no-preference)",
+        () => setupCompactExperience(true),
       );
 
       cleanup(() => media.revert());
@@ -258,7 +293,11 @@ export const Experience = component$(() => {
             id="experience-details"
             data-experience-details
           >
-            <div class="experience__copy" data-experience-reveal>
+            <div
+              class="experience__copy"
+              data-experience-reveal
+              data-experience-early-reveal
+            >
               <p data-experience-text-reveal>
                 We mapped dependencies across systems spanning five decades,
                 aligned business data across platforms, and managed the
@@ -278,14 +317,15 @@ export const Experience = component$(() => {
               </p>
             </div>
 
-            <div class="experience__metrics-window">
+            <div
+              class="experience__metrics-window"
+              data-experience-metrics-window
+              data-experience-reveal
+              data-experience-early-reveal
+            >
               <ul class="experience__metrics" data-experience-metrics>
                 {METRICS.map((metric) => (
-                  <li
-                    class="experience__metric"
-                    data-experience-reveal
-                    key={metric.description}
-                  >
+                  <li class="experience__metric" key={metric.description}>
                     <img
                       class="experience__divider"
                       src="/assets/icons/experience-divider.svg"
@@ -337,6 +377,7 @@ export const Experience = component$(() => {
             class="experience__action"
             data-experience-reveal
             data-experience-text-reveal
+            data-experience-early-reveal
           >
             <a
               class="button button--primary button--with-icon experience__cta"
