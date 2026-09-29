@@ -88,7 +88,7 @@ export const Navbar = component$(() => {
         mobileToggle: "[data-navbar-mobile-toggle]",
         panel: "[data-navbar-panel]",
         darkSection:
-          "[data-problem], [data-decision-flow], [data-ten-to-one], [data-authority-evidence], [data-status-stack], [data-enterprise-system]",
+          "[data-problem], [data-decision-flow], [data-ten-to-one], [data-authority-evidence], [data-status-stack], [data-enterprise-system], [data-decision-cta]",
       };
 
       const listeners: Array<{
